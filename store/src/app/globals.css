@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fbfaf6;
+  --foreground: #10231a;
+  --surface: #ffffff;
+  --muted: #f1f0e8;
+  --muted-foreground: #5b6b62;
+  --border: #e4e2d6;
+  --brand: #15803d;
+  --brand-hover: #166534;
+  --brand-deep: #14532d;
+  --brand-soft: #dcfce7;
+  --accent: #c2410c;
+  --accent-soft: #ffedd5;
+  --gold: #f59e0b;
+  --danger: #b91c1c;
+  --ring: #15803d;
+  --shadow-md: 0 6px 18px -6px rgb(16 35 26 / 0.16), 0 2px 6px rgb(16 35 26 / 0.06);
+  --shadow-lg: 0 24px 48px -16px rgb(16 35 26 / 0.28);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b1510;
+    --foreground: #eef5ef;
+    --surface: #12201a;
+    --muted: #172a22;
+    --muted-foreground: #9db3a5;
+    --border: #243a2f;
+    --brand: #4ade80;
+    --brand-hover: #86efac;
+    --brand-deep: #bbf7d0;
+    --brand-soft: #143522;
+    --accent: #fb923c;
+    --accent-soft: #3b1d0e;
+    --danger: #f87171;
+    --ring: #4ade80;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-gold: var(--gold);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-inter), ui-sans-serif, sans-serif;
+  --shadow-soft: var(--shadow-md);
+  --shadow-pop: var(--shadow-lg);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 25%,
+    color-mix(in srgb, var(--muted) 55%, var(--surface)) 50%,
+    var(--muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

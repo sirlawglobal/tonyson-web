@@ -1,0 +1,13 @@
+{
+  "name": "tonyson-web",
+  "private": true,
+  "workspaces": ["store", "admin"],
+  "scripts": {
+    "dev:store": "npm run dev -w store",
+    "dev:admin": "npm run dev -w admin",
+    "build": "npm run build -w store && npm run build -w admin",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "engines": { "node": ">=20" }
+}
