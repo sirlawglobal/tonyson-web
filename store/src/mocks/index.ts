@@ -15,6 +15,7 @@ import type {
   User,
 } from '@sirlawglobal/contracts';
 import { ORDER_STATUS_LABEL } from '@sirlawglobal/contracts';
+import productImageCounts from './product-images.json';
 
 /* ------------------------------------------------------------------ */
 /* Deterministic PRNG so server and client render identical dummy data */
@@ -40,7 +41,18 @@ export const MOCK_NOW = new Date('2026-11-09T09:00:00.000Z');
 const daysAgo = (d: number, h = 0) =>
   new Date(MOCK_NOW.getTime() - d * 86_400_000 - h * 3_600_000).toISOString();
 
-/** Dummy product image: tinted gradient tile with an emoji (works offline). */
+/**
+ * Real product photos live in `public/products/<slug>-<n>.jpg` (Wikimedia Commons, see
+ * `public/products/CREDITS.json`). `product-images.json` records how many photos exist per slug.
+ */
+const imageCounts = productImageCounts as Record<string, number>;
+export function productPhotos(baseName: string): string[] {
+  const slug = slugify(baseName);
+  const n = imageCounts[slug] ?? 0;
+  return Array.from({ length: n }, (_, i) => `/products/${slug}-${i + 1}.jpg`);
+}
+
+/** Fallback image (only used when no photo exists): tinted gradient tile with an emoji (works offline). */
 export function placeholderImage(emoji: string, tint: string, layout: 'single' | 'pair' | 'trio' = 'single'): string {
   const marks =
     layout === 'single'
@@ -137,11 +149,12 @@ CATALOG.forEach((c, ci) => {
         description: `${name} (${unit}) — carefully sourced and quality-checked by the Tonyson team. Delivered fresh to your door, same day in most areas.`,
         categoryId: `cat_${ci + 1}`,
         sku: `TNY-${String(ci + 1).padStart(2, '0')}${String(products.length + 1).padStart(3, '0')}`,
-        images: [
-          placeholderImage(emoji, c.tint),
-          placeholderImage(emoji, c.tint, 'pair'),
-          placeholderImage(emoji, c.tint, 'trio'),
-        ],
+        images: (() => {
+          const photos = productPhotos(base);
+          return photos.length
+            ? photos
+            : [placeholderImage(emoji, c.tint), placeholderImage(emoji, c.tint, 'pair'), placeholderImage(emoji, c.tint, 'trio')];
+        })(),
         price,
         previousPrice: previous,
         costPrice: Math.round(price * 0.72),
