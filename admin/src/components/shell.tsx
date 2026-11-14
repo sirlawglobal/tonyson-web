@@ -11,6 +11,7 @@ import { apiDevtools, getDashboardSummary } from '@/lib/api';
 import { useRole } from '@/lib/role-context';
 import { cn } from '@/lib/utils';
 import { Sheet } from './ui/sheet';
+import { ThemeToggle } from './theme-toggle';
 import { Select } from './ui/select';
 import { Button } from './ui/button';
 import { EmptyState } from './ui/empty-state';
@@ -128,6 +129,7 @@ function Topbar({ onMenu }: { onMenu: () => void }) {
         <Menu />
       </Button>
       <div className="ml-auto flex items-center gap-3">
+        <ThemeToggle />
         <label className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
           <input
             type="checkbox"

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RoleProvider } from '@/lib/role-context';
+import { ThemeProvider } from '@/lib/theme';
 import { Toaster } from '@/components/ui/toaster';
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -17,10 +18,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
   });
   return (
     <QueryClientProvider client={client}>
-      <RoleProvider>
-        {children}
-        <Toaster />
-      </RoleProvider>
+      <ThemeProvider>
+        <RoleProvider>
+          {children}
+          <Toaster />
+        </RoleProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

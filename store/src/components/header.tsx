@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Bell, MapPin, ShoppingBag, User } from 'lucide-react';
 import { Logo } from '@/components/logo';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { SearchBox } from '@/components/search-box';
 import { useAuth } from '@/lib/auth';
 import { useCart } from '@/lib/cart';
@@ -28,6 +29,7 @@ export function Header() {
         </Link>
         <SearchBox className="hidden flex-1 md:block" />
         <div className="ml-auto flex items-center gap-1 md:ml-0">
+          <ThemeToggle />
           <Link href="/account/notifications" className="hidden h-11 w-11 place-items-center rounded-full hover:bg-muted sm:grid" aria-label="Notifications"><Bell className="h-5 w-5" /></Link>
           <Link href={user ? '/account' : '/login'} className="hidden h-11 items-center gap-2 rounded-full px-3 text-sm font-semibold hover:bg-muted sm:flex"><User className="h-5 w-5" aria-hidden />{ready && user ? user.name.split(' ')[0] : 'Log in'}</Link>
           <button

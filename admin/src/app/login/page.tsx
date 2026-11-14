@@ -8,6 +8,7 @@ import { LoginInput } from '@sirlawglobal/contracts';
 import { Button } from '@/components/ui/button';
 import { Input, Label } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -25,7 +26,8 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-accent/40 p-4">
+    <main className="relative flex min-h-dvh items-center justify-center bg-accent/40 p-4">
+      <ThemeToggle className="absolute right-4 top-4" />
       <Card className="w-full max-w-sm p-6">
         <div className="mb-6 flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}

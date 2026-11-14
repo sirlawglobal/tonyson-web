@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, Inter } from 'next/font/google';
 import './globals.css';
+import { themeInitScript } from '@/lib/theme-script';
 import { Providers } from './providers';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
@@ -19,7 +20,8 @@ export const viewport: Viewport = { themeColor: '#bb0000', width: 'device-width'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${display.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${display.variable}`}>
+      <head><script dangerouslySetInnerHTML={{ __html: themeInitScript }} /></head>
       <body className="min-h-dvh pb-20 md:pb-0">
         <Providers>
           <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-brand focus:px-4 focus:py-2 focus:text-white">

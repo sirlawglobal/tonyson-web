@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Dark mode is class-driven (see lib/theme.tsx): .dark on <html> follows the user choice or the OS. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #fafafa;
   --foreground: #1a1a1a;
@@ -18,25 +21,25 @@
   --ring: #0a6aa8;
   --shadow-md: 0 6px 18px -6px rgb(26 26 26 / 0.16), 0 2px 6px rgb(26 26 26 / 0.06);
   --shadow-lg: 0 24px 48px -16px rgb(26 26 26 / 0.28);
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f1114;
-    --foreground: #f2f2f2;
-    --surface: #181b20;
-    --muted: #20242a;
-    --muted-foreground: #a3a9b1;
-    --border: #2c3138;
-    --brand: #ff5a5a;
-    --brand-hover: #ff8080;
-    --brand-deep: #ffd0d0;
-    --brand-soft: #3a1414;
-    --accent: #4cb8f2;
-    --accent-soft: #0e2a3d;
-    --danger: #f87171;
-    --ring: #4cb8f2;
-  }
+.dark {
+  --background: #0f1114;
+  --foreground: #f2f2f2;
+  --surface: #181b20;
+  --muted: #20242a;
+  --muted-foreground: #a3a9b1;
+  --border: #2c3138;
+  --brand: #ff5a5a;
+  --brand-hover: #ff8080;
+  --brand-deep: #ffd0d0;
+  --brand-soft: #3a1414;
+  --accent: #4cb8f2;
+  --accent-soft: #0e2a3d;
+  --danger: #f87171;
+  --ring: #4cb8f2;
+  color-scheme: dark;
 }
 
 @theme inline {
