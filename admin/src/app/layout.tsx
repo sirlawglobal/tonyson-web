@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'sw
 export const metadata: Metadata = {
   title: 'Tonyson Admin',
   description: 'Tonyson Virtual Supermarket staff dashboard',
-  icons: { icon: '/logo.svg' },
+  icons: { icon: '/logo-mark.png', apple: '/logo-mark.png' },
   robots: { index: false, follow: false },
 };
 

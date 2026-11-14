@@ -19,7 +19,7 @@ export function QuantityStepper({
   className?: string;
 }) {
   const btn = cn(
-    'grid place-items-center rounded-full bg-brand text-white transition-transform active:scale-90 disabled:opacity-40 dark:text-[#06210f]',
+    'grid place-items-center rounded-full bg-brand text-white transition-transform active:scale-90 disabled:opacity-40 dark:text-[#2a0505]',
     size === 'sm' ? 'h-9 w-9' : 'h-11 w-11',
   );
   return (

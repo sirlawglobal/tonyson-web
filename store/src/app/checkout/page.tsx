@@ -29,7 +29,7 @@ const SLOTS = ['ASAP (about 2 hrs)', 'Today 4pm – 6pm', 'Tomorrow 9am – 12pm
 function Confetti() {
   const reduce = useReducedMotion();
   if (reduce) return null;
-  const colors = ['#15803d', '#f59e0b', '#c2410c', '#6366f1', '#ec4899'];
+  const colors = ['#bb0000', '#0a9be8', '#0a2a6b', '#e80000', '#f59e0b'];
   return (
     <div className="pointer-events-none fixed inset-0 z-[60] overflow-hidden" aria-hidden>
       {Array.from({ length: 36 }, (_, i) => (
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
         <Confetti />
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 12 }} className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-brand text-white dark:text-[#06210f]"><Check className="h-12 w-12" strokeWidth={3} /></motion.div>
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 12 }} className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-brand text-white dark:text-[#2a0505]"><Check className="h-12 w-12" strokeWidth={3} /></motion.div>
         <h1 className="mt-6 font-display text-3xl font-extrabold">Order placed!</h1>
         <p className="mt-2 text-muted-foreground">Order <strong className="text-foreground">{placed.number}</strong> is confirmed. Delivery: {slot}.</p>
         <p className="mt-1 text-sm text-muted-foreground">(Demo: no real payment was taken.)</p>
@@ -136,7 +136,7 @@ export default function CheckoutPage() {
       <ol className="my-6 flex items-center gap-2" aria-label="Checkout progress">
         {steps.map((s, i) => (
           <li key={s} className="flex flex-1 items-center gap-2" aria-current={i === step ? 'step' : undefined}>
-            <span className={cn('grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-bold transition-colors', i <= step ? 'bg-brand text-white dark:text-[#06210f]' : 'bg-muted text-muted-foreground')}>{i < step ? <Check className="h-4 w-4" /> : i + 1}</span>
+            <span className={cn('grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm font-bold transition-colors', i <= step ? 'bg-brand text-white dark:text-[#2a0505]' : 'bg-muted text-muted-foreground')}>{i < step ? <Check className="h-4 w-4" /> : i + 1}</span>
             <span className={cn('hidden text-sm font-semibold sm:inline', i === step ? 'text-foreground' : 'text-muted-foreground')}>{s}</span>
             {i < steps.length - 1 && <span className={cn('h-0.5 flex-1 rounded-full', i < step ? 'bg-brand' : 'bg-border')} />}
           </li>

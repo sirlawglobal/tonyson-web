@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Bell, MapPin, ShoppingBag, User } from 'lucide-react';
+import { Logo } from '@/components/logo';
 import { SearchBox } from '@/components/search-box';
 import { useAuth } from '@/lib/auth';
 import { useCart } from '@/lib/cart';
@@ -23,8 +24,7 @@ export function Header() {
       </div>
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 md:gap-6">
         <Link href="/" aria-label="Tonyson home" className="shrink-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.svg" alt="Tonyson" className="h-9 w-auto md:h-10" />
+          <Logo className="md:h-10" />
         </Link>
         <SearchBox className="hidden flex-1 md:block" />
         <div className="ml-auto flex items-center gap-1 md:ml-0">
@@ -32,7 +32,7 @@ export function Header() {
           <Link href={user ? '/account' : '/login'} className="hidden h-11 items-center gap-2 rounded-full px-3 text-sm font-semibold hover:bg-muted sm:flex"><User className="h-5 w-5" aria-hidden />{ready && user ? user.name.split(' ')[0] : 'Log in'}</Link>
           <button
             onClick={() => cart.setDrawerOpen(true)}
-            className="relative flex h-11 items-center gap-2 rounded-full bg-brand px-4 text-sm font-semibold text-white shadow-sm hover:bg-brand-hover dark:text-[#06210f]"
+            className="relative flex h-11 items-center gap-2 rounded-full bg-brand px-4 text-sm font-semibold text-white shadow-sm hover:bg-brand-hover dark:text-[#2a0505]"
             aria-label={`Open cart, ${cart.count} items`}
           >
             <motion.span key={cart.pulse} initial={{ scale: 1 }} animate={{ scale: [1, 1.35, 1] }} transition={{ duration: 0.35 }} className="inline-flex">

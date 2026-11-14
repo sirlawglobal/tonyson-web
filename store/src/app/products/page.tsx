@@ -60,7 +60,9 @@ function Listing() {
     push({ category: f.category, minPrice: f.minPrice, maxPrice: f.maxPrice, inStock: f.inStock, onPromotion: f.onPromotion });
 
   const { data, isLoading, isError, isFetching, refetch } = useProducts({
-    q, sort, page, pageSize: PAGE_SIZE, categorySlug: filters.category, minPrice: filters.minPrice, maxPrice: filters.maxPrice,
+    q, sort, page, pageSize: PAGE_SIZE, categorySlug: filters.category,
+    // The URL and filter UI use naira; the API takes kobo.
+    minPrice: filters.minPrice ? filters.minPrice * 100 : undefined, maxPrice: filters.maxPrice ? filters.maxPrice * 100 : undefined,
     inStock: filters.inStock, onPromotion: filters.onPromotion, featured, bestSeller,
   });
 

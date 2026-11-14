@@ -80,6 +80,7 @@ export async function register(input: RegisterInput): Promise<User> {
   if (input.email.toLowerCase() === 'taken@example.com') throw new ApiError('An account with this email already exists.', 'EMAIL_TAKEN', 'email');
   const user: User = {
     id: `usr_${Date.now().toString(36)}`,
+    status: 'ACTIVE',
     name: input.name,
     email: input.email,
     phone: input.phone,
@@ -210,6 +211,7 @@ export async function createOrder(args: { summary: CartSummary; address: Address
     deliveryFee: args.summary.deliveryFee,
     total: args.summary.total,
     address: args.address,
+    deliverySlot: args.slot,
     promoCode: args.summary.promoCode,
     statusHistory: [
       { status: 'PENDING_PAYMENT', at: now, note: 'Order created' },

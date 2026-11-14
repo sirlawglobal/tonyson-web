@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Check } from 'lucide-react';
+import { Logo } from '@/components/logo';
 
 const perks = ['Free delivery over ₦25,000', 'Earn points on every order', 'Track orders in real time'];
 
@@ -9,7 +10,7 @@ export function AuthShell({ title, subtitle, children, footer }: { title: string
       <aside className="relative hidden overflow-hidden rounded-[2rem] bg-brand-deep p-10 text-white lg:flex lg:flex-col lg:justify-between dark:bg-brand-soft dark:text-brand-deep">
         <div className="absolute -right-16 -top-16 h-72 w-72 rounded-full bg-white/10 blur-2xl" aria-hidden />
         <span aria-hidden className="absolute -bottom-6 -right-4 text-[14rem] leading-none opacity-30">🛒</span>
-        <p className="relative font-display text-3xl font-extrabold">Tonyson</p>
+        <Link href="/" aria-label="Tonyson home" className="relative w-fit"><Logo variant="onDark" className="h-12" /></Link>
         <div className="relative">
           <h2 className="font-display text-4xl font-extrabold leading-tight">Fresh groceries, one tap away.</h2>
           <ul className="mt-6 space-y-3">

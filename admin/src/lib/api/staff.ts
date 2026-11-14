@@ -24,7 +24,7 @@ export function createStaff(input: StaffInput): Promise<StaffRow> {
     if (db.staff.some((s) => s.email.toLowerCase() === input.email.toLowerCase())) {
       throw new ApiError('A staff member with this email already exists', 409);
     }
-    const user: User = { id: uid('stf'), ...input, verified: false, createdAt: nowIso() };
+    const user: User = { id: uid('stf'), ...input, verified: false, status: 'ACTIVE', createdAt: nowIso() };
     db.staff.push(user);
     audit('staff.invited', user.name, `${user.email} as ${user.role}`);
     return toRow(user);

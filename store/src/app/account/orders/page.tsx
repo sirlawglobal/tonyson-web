@@ -28,7 +28,7 @@ export default function OrdersPage() {
       <PageTitle title="My orders" subtitle={data ? `${data.length} orders in total` : undefined} />
       <div className="no-scrollbar -mx-4 mb-5 flex gap-2 overflow-x-auto px-4 md:mx-0 md:px-0" role="group" aria-label="Filter orders">
         {GROUPS.map((g, i) => (
-          <button key={g.label} aria-pressed={i === group} onClick={() => setGroup(i)} className={cn('shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors', i === group ? 'bg-brand text-white dark:text-[#06210f]' : 'bg-muted text-muted-foreground hover:text-foreground')}>{g.label}</button>
+          <button key={g.label} aria-pressed={i === group} onClick={() => setGroup(i)} className={cn('shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors', i === group ? 'bg-brand text-white dark:text-[#2a0505]' : 'bg-muted text-muted-foreground hover:text-foreground')}>{g.label}</button>
         ))}
       </div>
 

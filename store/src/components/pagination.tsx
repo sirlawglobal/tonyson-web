@@ -23,7 +23,7 @@ export function Pagination({ page, totalPages, onChange }: { page: number; total
         p === '…' ? (
           <span key={`e${i}`} className="px-1 text-muted-foreground" aria-hidden>…</span>
         ) : (
-          <button key={p} onClick={() => onChange(p)} aria-current={p === page ? 'page' : undefined} aria-label={`Page ${p}`} className={cn(btn, p === page ? 'bg-brand text-white dark:text-[#06210f]' : 'hover:bg-muted')}>{p}</button>
+          <button key={p} onClick={() => onChange(p)} aria-current={p === page ? 'page' : undefined} aria-label={`Page ${p}`} className={cn(btn, p === page ? 'bg-brand text-white dark:text-[#2a0505]' : 'hover:bg-muted')}>{p}</button>
         ),
       )}
       <button className={cn(btn, 'border border-border hover:bg-muted disabled:opacity-40')} disabled={page >= totalPages} onClick={() => onChange(page + 1)} aria-label="Next page"><ChevronRight className="h-4 w-4" /></button>

@@ -2,21 +2,21 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Tonyson Admin design tokens: calm, dense, internal-tool look. Brand green from the logo. */
+/* Tonyson Admin design tokens: calm, dense, internal-tool look. Brand red and blue from the logo. */
 :root {
-  --background: #f6f8f7;
-  --foreground: #0f1f17;
+  --background: #f7f7f8;
+  --foreground: #1a1a1a;
   --card: #ffffff;
-  --muted: #eef2f0;
-  --muted-foreground: #55655d;
-  --border: #dce4df;
-  --input: #c3cfc8;
-  --ring: #16a34a;
-  --primary: #15803d; /* white text on this is 5:1 (AA) */
+  --muted: #efeff1;
+  --muted-foreground: #5c6066;
+  --border: #e0e0e3;
+  --input: #c8c9ce;
+  --ring: #0a6aa8;
+  --primary: #bb0000; /* white text on this is ~7:1 (AAA) */
   --primary-foreground: #ffffff;
-  --brand: #16a34a;
-  --accent: #e7f6ec;
-  --accent-foreground: #14532d;
+  --brand: #bb0000;
+  --accent: #e3f1fa;
+  --accent-foreground: #0a2a6b;
   --success: #15803d;
   --success-soft: #dcfce7;
   --warning: #b45309;
@@ -30,19 +30,19 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --background: #0b1410;
-    --foreground: #e8f0eb;
-    --card: #111c16;
-    --muted: #17241d;
-    --muted-foreground: #9db0a5;
-    --border: #22332a;
-    --input: #2f4438;
-    --ring: #22c55e;
-    --primary: #22c55e;
-    --primary-foreground: #052e12;
-    --brand: #22c55e;
-    --accent: #14301f;
-    --accent-foreground: #bbf7d0;
+    --background: #0f1114;
+    --foreground: #f2f2f2;
+    --card: #181b20;
+    --muted: #20242a;
+    --muted-foreground: #a3a9b1;
+    --border: #2c3138;
+    --input: #3a4048;
+    --ring: #4cb8f2;
+    --primary: #ff5a5a;
+    --primary-foreground: #2a0505;
+    --brand: #ff5a5a;
+    --accent: #0e2a3d;
+    --accent-foreground: #bfe6fb;
     --success: #4ade80;
     --success-soft: #12301f;
     --warning: #fbbf24;
@@ -56,19 +56,19 @@
 }
 
 .dark {
-  --background: #0b1410;
-  --foreground: #e8f0eb;
-  --card: #111c16;
-  --muted: #17241d;
-  --muted-foreground: #9db0a5;
-  --border: #22332a;
-  --input: #2f4438;
-  --ring: #22c55e;
-  --primary: #22c55e;
-  --primary-foreground: #052e12;
-  --brand: #22c55e;
-  --accent: #14301f;
-  --accent-foreground: #bbf7d0;
+  --background: #0f1114;
+  --foreground: #f2f2f2;
+  --card: #181b20;
+  --muted: #20242a;
+  --muted-foreground: #a3a9b1;
+  --border: #2c3138;
+  --input: #3a4048;
+  --ring: #4cb8f2;
+  --primary: #ff5a5a;
+  --primary-foreground: #2a0505;
+  --brand: #ff5a5a;
+  --accent: #0e2a3d;
+  --accent-foreground: #bfe6fb;
   --success: #4ade80;
   --success-soft: #12301f;
   --warning: #fbbf24;

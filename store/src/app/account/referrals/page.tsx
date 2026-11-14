@@ -69,7 +69,7 @@ export default function ReferralsPage() {
           <h2 className="mb-4 font-display text-lg font-bold">How it works</h2>
           <ol className="space-y-4">
             {STEPS.map((s, i) => (
-              <li key={s.t} className="flex gap-3"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand text-sm font-bold text-white dark:text-[#06210f]">{i + 1}</span><div><p className="font-semibold">{s.t}</p><p className="text-sm text-muted-foreground">{s.b}</p></div></li>
+              <li key={s.t} className="flex gap-3"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand text-sm font-bold text-white dark:text-[#2a0505]">{i + 1}</span><div><p className="font-semibold">{s.t}</p><p className="text-sm text-muted-foreground">{s.b}</p></div></li>
             ))}
           </ol>
           <p className="mt-4 text-xs text-muted-foreground">Self-referrals and duplicate accounts don’t qualify.</p>

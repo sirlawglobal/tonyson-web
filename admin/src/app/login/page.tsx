@@ -27,8 +27,11 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-dvh items-center justify-center bg-accent/40 p-4">
       <Card className="w-full max-w-sm p-6">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.svg" alt="Tonyson" className="mb-6 h-9 w-auto" />
+        <div className="mb-6 flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-mark.png" alt="" aria-hidden width={256} height={286} className="h-10 w-auto" />
+          <span className="text-xl font-bold tracking-tight">Tonyson</span>
+        </div>
         <h1 className="text-lg font-semibold tracking-tight">Staff sign in</h1>
         <p className="mb-5 text-sm text-muted-foreground">Access the Tonyson admin dashboard.</p>
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">

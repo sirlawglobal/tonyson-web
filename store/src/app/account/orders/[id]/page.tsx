@@ -50,7 +50,7 @@ function Timeline({ order }: { order: Order }) {
         return (
           <li key={`${s.status}-${i}`} className="relative flex gap-4 pb-6 last:pb-0" aria-current={s.state === 'current' ? 'step' : undefined}>
             {i < steps.length - 1 && <span className={cn('absolute left-[15px] top-8 h-[calc(100%-2rem)] w-0.5', s.state === 'upcoming' ? 'bg-border' : bad ? 'bg-danger/40' : 'bg-brand')} aria-hidden />}
-            <span className={cn('relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border-2', s.state === 'upcoming' ? 'border-border bg-surface text-muted-foreground' : bad ? 'border-danger bg-danger text-white' : 'border-brand bg-brand text-white dark:text-[#06210f]')}>
+            <span className={cn('relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border-2', s.state === 'upcoming' ? 'border-border bg-surface text-muted-foreground' : bad ? 'border-danger bg-danger text-white' : 'border-brand bg-brand text-white dark:text-[#2a0505]')}>
               {s.state === 'current' && !bad && <span className="absolute inset-0 animate-ping rounded-full bg-brand/40" aria-hidden />}
               {s.state === 'upcoming' ? <span className="h-2 w-2 rounded-full bg-border" /> : bad ? <X className="relative h-4 w-4" /> : <Check className="relative h-4 w-4" strokeWidth={3} />}
             </span>

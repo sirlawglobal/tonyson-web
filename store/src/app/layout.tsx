@@ -13,9 +13,9 @@ const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-disp
 export const metadata: Metadata = {
   title: { default: 'Tonyson Virtual Supermarket', template: '%s · Tonyson' },
   description: 'Fresh groceries, delivered fast. Shop fruit, veg, meat, pantry staples and more from Tonyson.',
-  icons: { icon: '/logo.svg' },
+  icons: { icon: '/logo-mark.png', apple: '/logo-mark.png' },
 };
-export const viewport: Viewport = { themeColor: '#15803d', width: 'device-width', initialScale: 1 };
+export const viewport: Viewport = { themeColor: '#bb0000', width: 'device-width', initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

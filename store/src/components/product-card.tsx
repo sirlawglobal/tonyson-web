@@ -59,7 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
                   cart.add(product.id);
                   toast.success('Added to cart', { description: product.name });
                 }}
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand text-white shadow-sm transition-all hover:scale-110 hover:bg-brand-hover active:scale-90 dark:text-[#06210f]"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand text-white shadow-sm transition-all hover:scale-110 hover:bg-brand-hover active:scale-90 dark:text-[#2a0505]"
                 aria-label={`Add ${product.name} to cart`}
               >
                 <Plus className="h-5 w-5" />

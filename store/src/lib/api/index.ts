@@ -71,8 +71,8 @@ export async function listProducts(filter: Partial<ProductFilter> = {}): Promise
   const prices = list.map((p) => p.price);
   const priceBounds = prices.length ? { min: Math.min(...prices), max: Math.max(...prices) } : { min: 0, max: 0 };
   if (bestSeller) list = list.filter((p) => p.bestSeller);
-  if (minPrice) list = list.filter((p) => p.price >= minPrice * 100);
-  if (maxPrice) list = list.filter((p) => p.price <= maxPrice * 100);
+  if (minPrice) list = list.filter((p) => p.price >= minPrice);
+  if (maxPrice) list = list.filter((p) => p.price <= maxPrice);
   if (inStock) list = list.filter((p) => availableStock(p) > 0);
   if (onPromotion) list = list.filter((p) => p.onPromotion);
   if (featured) list = list.filter((p) => p.featured);

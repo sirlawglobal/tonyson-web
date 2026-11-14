@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Logo } from '@/components/logo';
 import { Clock, Leaf, ShieldCheck, Truck } from 'lucide-react';
 
 const perks = [
@@ -22,7 +23,7 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:grid-cols-4">
           <div className="md:col-span-1">
-            <p className="font-display text-2xl font-extrabold">Tonyson</p>
+            <Logo variant="onDark" className="h-10" />
             <p className="mt-2 text-sm opacity-75">Your virtual supermarket. Fresh groceries, fair prices, delivered to your door.</p>
           </div>
           {[

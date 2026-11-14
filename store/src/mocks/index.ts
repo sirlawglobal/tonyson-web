@@ -218,6 +218,7 @@ export const customers: User[] = Array.from({ length: 100 }, (_, i) => {
     phone: `080${int(10000000, 99999999)}`,
     role: 'CUSTOMER' as const,
     verified: rand() < 0.85,
+    status: 'ACTIVE' as const,
     referralCode: `TNY${slugify(name).slice(0, 4).toUpperCase()}${i + 10}`,
     createdAt: daysAgo(int(1, 400)),
   };
@@ -225,16 +226,16 @@ export const customers: User[] = Array.from({ length: 100 }, (_, i) => {
 
 export const currentCustomer: User = {
   id: 'usr_me', name: 'Amara Johnson', email: 'amara@example.com', phone: '08031234567',
-  role: 'CUSTOMER', verified: true, referralCode: 'TNYAMARA25', createdAt: daysAgo(210),
+  role: 'CUSTOMER', verified: true, status: 'ACTIVE', referralCode: 'TNYAMARA25', createdAt: daysAgo(210),
 };
 
 export const staff: User[] = [
-  { id: 'stf_1', name: 'Tony Adewale', email: 'tony@tonyson.com', phone: '08011112222', role: 'SUPER_ADMIN', verified: true, createdAt: daysAgo(500) },
-  { id: 'stf_2', name: 'Grace Okoro', email: 'grace@tonyson.com', phone: '08022223333', role: 'STORE_MANAGER', verified: true, createdAt: daysAgo(400) },
-  { id: 'stf_3', name: 'Musa Danjuma', email: 'musa@tonyson.com', phone: '08033334444', role: 'INVENTORY_MANAGER', verified: true, createdAt: daysAgo(300) },
-  { id: 'stf_4', name: 'Linda Eze', email: 'linda@tonyson.com', phone: '08044445555', role: 'MARKETING_MANAGER', verified: true, createdAt: daysAgo(250) },
-  { id: 'stf_5', name: 'Peter Obi', email: 'peter@tonyson.com', phone: '08055556666', role: 'ORDER_PROCESSING_STAFF', verified: true, createdAt: daysAgo(200) },
-  { id: 'stf_6', name: 'Sola Bakare', email: 'sola@tonyson.com', phone: '08066667777', role: 'DELIVERY_PERSONNEL', verified: true, createdAt: daysAgo(150) },
+  { id: 'stf_1', name: 'Tony Adewale', email: 'tony@tonyson.com', phone: '08011112222', role: 'SUPER_ADMIN', verified: true, status: 'ACTIVE', createdAt: daysAgo(500) },
+  { id: 'stf_2', name: 'Grace Okoro', email: 'grace@tonyson.com', phone: '08022223333', role: 'STORE_MANAGER', verified: true, status: 'ACTIVE', createdAt: daysAgo(400) },
+  { id: 'stf_3', name: 'Musa Danjuma', email: 'musa@tonyson.com', phone: '08033334444', role: 'INVENTORY_MANAGER', verified: true, status: 'ACTIVE', createdAt: daysAgo(300) },
+  { id: 'stf_4', name: 'Linda Eze', email: 'linda@tonyson.com', phone: '08044445555', role: 'MARKETING_MANAGER', verified: true, status: 'ACTIVE', createdAt: daysAgo(250) },
+  { id: 'stf_5', name: 'Peter Obi', email: 'peter@tonyson.com', phone: '08055556666', role: 'ORDER_PROCESSING_STAFF', verified: true, status: 'ACTIVE', createdAt: daysAgo(200) },
+  { id: 'stf_6', name: 'Sola Bakare', email: 'sola@tonyson.com', phone: '08066667777', role: 'DELIVERY_PERSONNEL', verified: true, status: 'ACTIVE', createdAt: daysAgo(150) },
 ];
 
 export const addresses: Address[] = [

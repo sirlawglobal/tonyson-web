@@ -53,7 +53,8 @@ function SidebarContent() {
     <div className="flex h-full flex-col">
       <div className="flex h-14 shrink-0 items-center border-b border-border px-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.svg" alt="Tonyson" className="h-7 w-auto" />
+        <img src="/logo-mark.png" alt="" aria-hidden width={256} height={286} className="h-8 w-auto" />
+        <span className="ml-2 text-base font-bold tracking-tight">Tonyson</span>
         <span className="ml-2 rounded bg-accent px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-foreground">
           Admin
         </span>

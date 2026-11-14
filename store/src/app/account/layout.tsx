@@ -45,13 +45,13 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
       {!user.verified && (
         <div role="status" className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-accent-soft p-4 text-sm text-accent">
           <span className="flex items-center gap-2 font-semibold"><ShieldCheck className="h-5 w-5" aria-hidden />Verify your account to unlock rewards and faster checkout.</span>
-          <Link href="/verify" className="rounded-full bg-accent px-4 py-2 font-bold text-white dark:text-[#2a1000]">Verify now</Link>
+          <Link href="/verify" className="rounded-full bg-accent px-4 py-2 font-bold text-white dark:text-[#00182b]">Verify now</Link>
         </div>
       )}
       <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-10">
         <aside className="min-w-0">
           <div className="mb-4 flex items-center gap-3 rounded-3xl border border-border bg-surface p-4">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand text-lg font-extrabold text-white dark:text-[#06210f]" aria-hidden>{user.name.charAt(0).toUpperCase()}</span>
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-brand text-lg font-extrabold text-white dark:text-[#2a0505]" aria-hidden>{user.name.charAt(0).toUpperCase()}</span>
             <div className="min-w-0">
               <p className="truncate font-display font-bold">{user.name}</p>
               <p className="truncate text-xs text-muted-foreground">{user.email}</p>
@@ -60,7 +60,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
           </div>
           <nav aria-label="Account" className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:mx-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:px-0">
             {NAV.map(({ href, label, icon: Icon }) => (
-              <Link key={href} href={href} aria-current={isActive(href) ? 'page' : undefined} className={cn('flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-colors lg:rounded-2xl', isActive(href) ? 'bg-brand text-white dark:text-[#06210f]' : 'bg-muted text-muted-foreground hover:text-foreground lg:bg-transparent lg:hover:bg-muted')}>
+              <Link key={href} href={href} aria-current={isActive(href) ? 'page' : undefined} className={cn('flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-colors lg:rounded-2xl', isActive(href) ? 'bg-brand text-white dark:text-[#2a0505]' : 'bg-muted text-muted-foreground hover:text-foreground lg:bg-transparent lg:hover:bg-muted')}>
                 <Icon className="h-4 w-4" aria-hidden />{label}
               </Link>
             ))}

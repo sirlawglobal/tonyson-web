@@ -80,7 +80,7 @@ export function ProductFilters({
           <input aria-label="Minimum price in naira" inputMode="numeric" placeholder="Min ₦" value={min} onChange={(e) => setMin(e.target.value.replace(/\D/g, ''))} className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm" />
           <span className="text-muted-foreground">–</span>
           <input aria-label="Maximum price in naira" inputMode="numeric" placeholder="Max ₦" value={max} onChange={(e) => setMax(e.target.value.replace(/\D/g, ''))} className="h-11 w-full rounded-xl border border-border bg-surface px-3 text-sm" />
-          <button type="button" onClick={applyPrice} className="h-11 rounded-xl bg-brand px-3 text-sm font-semibold text-white dark:text-[#06210f]">Go</button>
+          <button type="button" onClick={applyPrice} className="h-11 rounded-xl bg-brand px-3 text-sm font-semibold text-white dark:text-[#2a0505]">Go</button>
         </div>
         {priceBounds && priceBounds.max > 0 && <p className="pt-1 text-xs text-muted-foreground">Range here: {formatNaira(priceBounds.min)} – {formatNaira(priceBounds.max)}</p>}
       </Group>

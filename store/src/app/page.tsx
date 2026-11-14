@@ -30,7 +30,7 @@ export default function HomePage() {
                 <li key={c.id} className="shrink-0">
                   <Link href={`/products?category=${c.slug}`} className="group flex h-28 w-28 flex-col items-center justify-center gap-2 rounded-3xl border border-border text-center transition-all hover:-translate-y-1 hover:shadow-soft md:h-32 md:w-full" style={{ background: c.tint }}>
                     <span className="text-4xl transition-transform duration-300 group-hover:scale-125 md:text-5xl" aria-hidden>{c.emoji}</span>
-                    <span className="px-2 text-xs font-bold leading-tight text-[#10231a] md:text-sm">{c.name}</span>
+                    <span className="px-2 text-xs font-bold leading-tight text-[#1a1a1a] md:text-sm">{c.name}</span>
                   </Link>
                 </li>
               ))}
