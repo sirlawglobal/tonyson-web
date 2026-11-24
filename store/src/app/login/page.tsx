@@ -12,7 +12,9 @@ import { PasswordInput } from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Field } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { ApiError, login } from '@/lib/api/account';
+import { login } from '@/lib/api/auth';
+import { errorMessage } from '@/lib/api/client';
+import { applyApiErrors } from '@/lib/form-errors';
 import { useAuth } from '@/lib/auth';
 import { useCart } from '@/lib/cart';
 
@@ -36,7 +38,7 @@ function LoginForm() {
       toast.success(`Welcome back, ${user.name.split(' ')[0]}!`, { description: cart.count ? 'Your guest cart has been merged with your account.' : undefined });
       router.replace(next);
     } catch (e) {
-      setFormError(e instanceof ApiError ? e.message : 'Something went wrong. Please try again.');
+      if (!applyApiErrors(form, e, ['email', 'password'])) setFormError(errorMessage(e));
     }
   });
 
@@ -48,7 +50,6 @@ function LoginForm() {
         <Field label="Password" error={errors.password?.message}><PasswordInput autoComplete="current-password" aria-invalid={!!errors.password} {...form.register('password')} /></Field>
         <div className="text-right"><Link href="/forgot-password" className="text-sm font-semibold text-brand hover:underline">Forgot password?</Link></div>
         <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>{isSubmitting ? 'Signing in…' : 'Log in'}</Button>
-        <p className="text-center text-xs text-muted-foreground">Demo: use amara@example.com with any 8+ character password.</p>
       </form>
     </AuthShell>
   );

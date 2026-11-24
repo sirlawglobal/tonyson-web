@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { ChevronDown, Menu, ShieldOff } from 'lucide-react';
+import { ChevronDown, LogOut, Menu, ShieldOff } from 'lucide-react';
 import { Role, type Permission } from '@sirlawglobal/contracts';
 import { NAV, NAV_GROUPS, isNavActive, type NavItem } from '@/lib/nav';
 import { apiDevtools, getDashboardSummary } from '@/lib/api';
+import { useStaffAuth } from '@/lib/auth';
 import { useRole } from '@/lib/role-context';
 import { cn } from '@/lib/utils';
 import { Sheet } from './ui/sheet';
@@ -116,12 +117,23 @@ function SidebarContent() {
   );
 }
 
+/** Mock-data conveniences (simulate an API error, preview the UI as another role). Off unless NEXT_PUBLIC_DEV_TOOLS=true. */
+const DEV_TOOLS = process.env.NEXT_PUBLIC_DEV_TOOLS === 'true';
 const STAFF_ROLES = Role.options.filter((r) => r !== 'CUSTOMER');
+const roleLabel = (r: string) => r.toLowerCase().split('_').map((w) => w[0]!.toUpperCase() + w.slice(1)).join(' ');
 
 function Topbar({ onMenu }: { onMenu: () => void }) {
   const { role, setRole } = useRole();
+  const { user, signOut } = useStaffAuth();
+  const router = useRouter();
   const qc = useQueryClient();
   const [failing, setFailing] = useState(false);
+
+  const out = async () => {
+    await signOut();
+    qc.clear(); // nothing the previous person could see may linger in the cache
+    router.replace('/login');
+  };
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border bg-card/90 px-4 backdrop-blur">
@@ -130,30 +142,45 @@ function Topbar({ onMenu }: { onMenu: () => void }) {
       </Button>
       <div className="ml-auto flex items-center gap-3">
         <ThemeToggle />
-        <label className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
-          <input
-            type="checkbox"
-            checked={failing}
-            onChange={(e) => {
-              setFailing(e.target.checked);
-              apiDevtools.setFailing(e.target.checked);
-              qc.invalidateQueries();
-            }}
-          />
-          Simulate API error
-        </label>
-        <div className="flex items-center gap-1.5">
-          <label htmlFor="dev-role" className="hidden text-xs text-muted-foreground md:block">
-            Dev role
-          </label>
-          <Select id="dev-role" value={role} onChange={(e) => setRole(e.target.value as Role)} className="h-8 w-48 text-xs">
-            {STAFF_ROLES.map((r) => (
-              <option key={r} value={r}>
-                {r.replace(/_/g, ' ').toLowerCase().replace(/^\w|\s\w/g, (c) => c.toUpperCase())}
-              </option>
-            ))}
-          </Select>
-        </div>
+        {DEV_TOOLS && (
+          <>
+            <label className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
+              <input
+                type="checkbox"
+                checked={failing}
+                onChange={(e) => {
+                  setFailing(e.target.checked);
+                  apiDevtools.setFailing(e.target.checked);
+                  qc.invalidateQueries();
+                }}
+              />
+              Simulate API error
+            </label>
+            <div className="flex items-center gap-1.5">
+              <label htmlFor="dev-role" className="hidden text-xs text-muted-foreground md:block">
+                Preview as
+              </label>
+              <Select id="dev-role" value={role} onChange={(e) => setRole(e.target.value as Role)} className="h-8 w-48 text-xs">
+                {STAFF_ROLES.map((r) => (
+                  <option key={r} value={r}>
+                    {roleLabel(r)}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          </>
+        )}
+        {user && (
+          <div className="flex items-center gap-2">
+            <div className="hidden text-right text-xs leading-tight sm:block">
+              <p className="font-medium">{user.name}</p>
+              <p className="text-muted-foreground">{roleLabel(user.role)}</p>
+            </div>
+            <Button variant="outline" size="sm" onClick={out}>
+              <LogOut /> Sign out
+            </Button>
+          </div>
+        )}
       </div>
     </header>
   );
@@ -194,7 +221,7 @@ export function RequirePermission({ permission, children }: { permission: Permis
     <EmptyState
       icon={ShieldOff}
       title="You don't have access to this section"
-      description="Your role doesn't include the required permission. Switch the dev role in the top bar to preview other roles."
+      description="Your role doesn't include the required permission. Ask a Super Admin if you need access."
       action={
         first && (
           <Button asChild variant="outline" size="sm">

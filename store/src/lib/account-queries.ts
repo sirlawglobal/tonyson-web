@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { NotificationPreferences } from '@sirlawglobal/contracts';
 import * as account from '@/lib/api/account';
+import * as authApi from '@/lib/api/auth';
 
 export const useMyOrders = () => useQuery({ queryKey: ['my-orders'], queryFn: account.listMyOrders });
 export const useMyOrder = (id: string) => useQuery({ queryKey: ['my-order', id], queryFn: () => account.getMyOrder(id) });
@@ -37,7 +38,7 @@ export function useSavePreferences() {
   });
 }
 
-export const useUpdateProfile = () => useMutation({ mutationFn: account.updateProfile });
+export const useUpdateProfile = () => useMutation({ mutationFn: authApi.updateProfile });
 
 export function useCancelOrder() {
   const qc = useQueryClient();

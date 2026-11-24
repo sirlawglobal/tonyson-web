@@ -1,32 +1,24 @@
-import type { Paginated } from '@sirlawglobal/contracts';
-import { db, paginate, simulate, type AuditEntry } from './db';
+/** Audit log against the real API (GET /admin/audit, /admin/audit/actions). Append-only on the server. */
+import type { AuditEntry, Paginated } from '@sirlawglobal/contracts';
+import { http } from './client';
 
 export interface AuditFilter {
+  /** Case-insensitive "contains" on the actor's name. */
   actor?: string;
   /** Prefix such as "staff." or "order.status_changed". */
   action?: string;
-  /** yyyy-mm-dd, inclusive. */
+  /** yyyy-mm-dd, inclusive. Days are Africa/Lagos calendar days. */
   from?: string;
   to?: string;
 }
 
 export function listAuditEntries(filter: AuditFilter = {}, page = 1, pageSize = 15): Promise<Paginated<AuditEntry>> {
-  return simulate(() => {
-    const actor = filter.actor?.trim().toLowerCase();
-    const action = filter.action?.trim().toLowerCase();
-    const rows = [...db.auditLog]
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-      .filter(
-        (e) =>
-          (!actor || e.actor.toLowerCase().includes(actor)) &&
-          (!action || e.action.toLowerCase().startsWith(action)) &&
-          (!filter.from || e.createdAt.slice(0, 10) >= filter.from) &&
-          (!filter.to || e.createdAt.slice(0, 10) <= filter.to),
-      );
-    return paginate(rows, page, pageSize);
-  });
+  const qs = new URLSearchParams({ page: String(page), pageSize: String(pageSize) });
+  for (const key of ['actor', 'action', 'from', 'to'] as const) {
+    const value = filter[key]?.trim();
+    if (value) qs.set(key, value);
+  }
+  return http.get<Paginated<AuditEntry>>(`/admin/audit?${qs}`);
 }
 
-export function listAuditActions(): Promise<string[]> {
-  return simulate(() => [...new Set(db.auditLog.map((e) => e.action))].sort());
-}
+export const listAuditActions = (): Promise<string[]> => http.get<string[]>('/admin/audit/actions');

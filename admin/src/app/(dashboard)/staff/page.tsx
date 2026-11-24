@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Check, Plus, UserCheck, UserX } from 'lucide-react';
+import { Check, Mail, Plus, UserCheck, UserX } from 'lucide-react';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { Permission, ROLE_PERMISSIONS, Role } from '@sirlawglobal/contracts';
-import { changeStaffRole, createStaff, listStaffRows, setStaffActive, type StaffRow } from '@/lib/api/staff';
+import { changeStaffRole, createStaff, listStaffRows, resendInvite, setStaffActive, type StaffRow } from '@/lib/api/staff';
 import { PageHeader } from '@/components/page-header';
 import { RequirePermission } from '@/components/shell';
 import { Badge } from '@/components/ui/badge';
@@ -130,6 +130,15 @@ function StaffTable() {
     },
   });
 
+  const resend = useMutation({
+    mutationFn: (id: string) => resendInvite(id),
+    onSuccess: () => {
+      toast.success('A new set-password link has been emailed.');
+      qc.invalidateQueries({ queryKey: ['audit'] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const columns: Column<StaffRow>[] = [
     {
       key: 'name',
@@ -152,7 +161,10 @@ function StaffTable() {
       align: 'right',
       cell: (s) =>
         s.active ? (
-          <Button size="sm" variant="ghost" onClick={() => setTarget(s)} aria-label={`Deactivate ${s.name}`}><UserX /> Deactivate</Button>
+          <div className="flex justify-end gap-1">
+            <Button size="icon" variant="ghost" disabled={resend.isPending} onClick={() => resend.mutate(s.id)} aria-label={`Resend set-password link to ${s.name}`} title="Resend set-password link"><Mail /></Button>
+            <Button size="sm" variant="ghost" onClick={() => setTarget(s)} aria-label={`Deactivate ${s.name}`}><UserX /> Deactivate</Button>
+          </div>
         ) : (
           <Button size="sm" variant="ghost" onClick={() => toggle.mutate({ id: s.id, active: true })} aria-label={`Reactivate ${s.name}`}><UserCheck /> Reactivate</Button>
         ),
@@ -199,7 +211,6 @@ function PermissionMatrix() {
     <div className="space-y-3">
       <p className="text-sm text-muted-foreground">
         Each role grants a fixed set of permissions. This matrix is read-only here; it mirrors the rules the backend enforces on every request.
-        The role switcher in the top bar lets you preview what each role sees.
       </p>
       <Card className="overflow-x-auto">
         <table className="w-full border-collapse text-left text-sm">

@@ -12,7 +12,9 @@ import { PasswordInput } from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Field } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { ApiError, register } from '@/lib/api/account';
+import { register } from '@/lib/api/auth';
+import { errorMessage } from '@/lib/api/client';
+import { applyApiErrors } from '@/lib/form-errors';
 import { useAuth } from '@/lib/auth';
 
 function RegisterForm() {
@@ -35,8 +37,8 @@ function RegisterForm() {
       const next = sp.get('next');
       router.replace(`/verify${next ? `?next=${encodeURIComponent(next)}` : ''}`);
     } catch (e) {
-      if (e instanceof ApiError && e.field === 'email') form.setError('email', { message: e.message });
-      else setFormError(e instanceof ApiError ? e.message : 'Something went wrong. Please try again.');
+      // 409 (email taken) and 400 (invalid fields) both carry per-field details; anything else is a banner.
+      if (!applyApiErrors(form, e, ['name', 'email', 'phone', 'password', 'referralCode'])) setFormError(errorMessage(e));
     }
   });
 

@@ -1,9 +1,10 @@
 /**
- * Account-side API seam (auth, profile, addresses, orders, rewards, notifications).
- * Dummy phase: mock-data plus localStorage so changes persist across reloads.
- * Backend phase: replace bodies with fetch() to /api/v1; keep signatures.
+ * Account-side API seam (addresses, orders, rewards, notifications). STILL MOCK DATA plus localStorage.
+ * Auth and profile moved to ./auth (real API). Each remaining function is swapped to HTTP, and its mock body
+ * deleted, in the backend phase that owns it (docs/BACKEND_SEAM_CHECKLIST.md).
  */
 import { canTransition } from '@sirlawglobal/contracts';
+import { getCachedUser } from './auth';
 import type {
   Address,
   AddressInput,
@@ -48,7 +49,8 @@ function save(key: string, value: unknown) {
   }
 }
 
-export class ApiError extends Error {
+/** Error type for the remaining mock functions below (addresses, orders, ...); real calls use ApiError from ./client. */
+class MockApiError extends Error {
   constructor(
     message: string,
     public code: string,
@@ -56,76 +58,6 @@ export class ApiError extends Error {
   ) {
     super(message);
   }
-}
-
-/* --------------------------------- Auth --------------------------------- */
-const SESSION = 'tny:session';
-
-export const getSession = (): User | null => load<User | null>(SESSION, null);
-
-export async function login(input: LoginInput): Promise<User> {
-  await wait();
-  if (input.email.toLowerCase().startsWith('wrong@')) throw new ApiError('Incorrect email or password.', 'INVALID_CREDENTIALS');
-  const stored = load<User | null>('tny:profile', null);
-  const user: User =
-    input.email.toLowerCase() === currentCustomer.email
-      ? (stored ?? currentCustomer)
-      : { ...currentCustomer, id: 'usr_demo', email: input.email, name: input.email.split('@')[0] as string };
-  save(SESSION, user);
-  return user;
-}
-
-export async function register(input: RegisterInput): Promise<User> {
-  await wait();
-  if (input.email.toLowerCase() === 'taken@example.com') throw new ApiError('An account with this email already exists.', 'EMAIL_TAKEN', 'email');
-  const user: User = {
-    id: `usr_${Date.now().toString(36)}`,
-    status: 'ACTIVE',
-    name: input.name,
-    email: input.email,
-    phone: input.phone,
-    role: 'CUSTOMER',
-    verified: false,
-    referralCode: `TNY${input.name.replace(/\W/g, '').slice(0, 5).toUpperCase()}25`,
-    createdAt: MOCK_NOW.toISOString(),
-  };
-  save(SESSION, user);
-  save('tny:profile', user);
-  return user;
-}
-
-export async function verifyAccount(code: string): Promise<User> {
-  await wait();
-  if (code !== '123456') throw new ApiError('That code is incorrect. Demo code: 123456', 'BAD_CODE', 'code');
-  const user = { ...(getSession() as User), verified: true };
-  save(SESSION, user);
-  save('tny:profile', user);
-  return user;
-}
-
-export async function requestPasswordReset(_email: string): Promise<void> {
-  await wait(); // always succeeds so we never reveal whether an email exists
-}
-
-export async function resetPassword(_token: string, _password: string): Promise<void> {
-  await wait();
-}
-
-export async function logout(): Promise<void> {
-  await wait(80, 150);
-  try {
-    localStorage.removeItem(SESSION);
-  } catch {
-    /* ignore */
-  }
-}
-
-export async function updateProfile(input: ProfileInput): Promise<User> {
-  await wait();
-  const user = { ...(getSession() as User), ...input };
-  save(SESSION, user);
-  save('tny:profile', user);
-  return user;
 }
 
 /* ------------------------------- Addresses ------------------------------- */
@@ -184,7 +116,7 @@ export async function getMyOrder(id: string): Promise<Order | null> {
 /** Demo: persists the order locally. Real backend creates it plus an outbox event in one transaction. */
 export async function createOrder(args: { summary: CartSummary; address: Address; slot: string }): Promise<Order> {
   await wait(500, 900);
-  const user = getSession();
+  const user = getCachedUser();
   const now = new Date().toISOString();
   const n = load<Order[]>(ORDERS, []).length;
   const order: Order = {
@@ -230,8 +162,8 @@ export async function createOrder(args: { summary: CartSummary; address: Address
 export async function cancelOrder(id: string): Promise<Order> {
   await wait(300, 600);
   const order = myOrders().find((o) => o.id === id);
-  if (!order) throw new ApiError('Order not found.', 'NOT_FOUND');
-  if (!canTransition(order.status, 'CANCELLED')) throw new ApiError('This order can no longer be cancelled.', 'INVALID_TRANSITION');
+  if (!order) throw new MockApiError('Order not found.', 'NOT_FOUND');
+  if (!canTransition(order.status, 'CANCELLED')) throw new MockApiError('This order can no longer be cancelled.', 'INVALID_TRANSITION');
   const now = new Date().toISOString();
   const updated: Order = {
     ...order,

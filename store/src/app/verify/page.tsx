@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { AuthShell } from '@/components/auth-shell';
 import { Button } from '@/components/ui/button';
-import { ApiError, verifyAccount } from '@/lib/api/account';
+import { resendVerification, verifyAccount } from '@/lib/api/auth';
+import { errorMessage } from '@/lib/api/client';
 import { useAuth, useRequireAuth } from '@/lib/auth';
 
 const LEN = 6;
@@ -36,7 +37,7 @@ function VerifyForm() {
       toast.success('Account verified');
       router.replace(next && next.startsWith('/') && !next.startsWith('//') ? next : '/account');
     } catch (e) {
-      setError(e instanceof ApiError ? e.message : 'Verification failed. Try again.');
+      setError(errorMessage(e, 'Verification failed. Try again.'));
       setDigits(Array(LEN).fill(''));
       refs.current[0]?.focus();
     } finally {
@@ -76,10 +77,18 @@ function VerifyForm() {
         {error && <p role="alert" className="text-sm text-danger">{error}</p>}
         <Button size="lg" className="w-full" disabled={busy || digits.some((d) => !d)} onClick={() => submit(digits.join(''))}>{busy ? 'Verifying…' : 'Verify'}</Button>
         <div className="flex items-center justify-between text-sm">
-          <button type="button" disabled={cooldown > 0} onClick={() => { setCooldown(30); toast.info('A new code has been sent.'); }} className="min-h-11 px-1 font-semibold text-brand disabled:text-muted-foreground">{cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend code'}</button>
+          <button type="button" disabled={cooldown > 0} onClick={async () => {
+            try {
+              await resendVerification();
+              setCooldown(30);
+              setError(undefined);
+              toast.info('A new code has been sent.');
+            } catch (e) {
+              toast.error(errorMessage(e, 'Could not send a new code. Try again shortly.'));
+            }
+          }} className="min-h-11 px-1 font-semibold text-brand disabled:text-muted-foreground">{cooldown > 0 ? `Resend in ${cooldown}s` : 'Resend code'}</button>
           <button type="button" onClick={() => router.replace(next && next.startsWith('/') && !next.startsWith('//') ? next : '/account')} className="min-h-11 px-1 text-muted-foreground underline">Skip for now</button>
         </div>
-        <p className="text-center text-xs text-muted-foreground">Demo code: 123456</p>
       </div>
     </AuthShell>
   );

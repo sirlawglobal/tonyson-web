@@ -1,14 +1,17 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { hasPermission, Role, type Permission } from '@sirlawglobal/contracts';
+import { hasPermission, type Permission, type Role } from '@sirlawglobal/contracts';
+import { setActor } from '@/lib/api/db';
+import { useStaffAuth } from '@/lib/auth';
 
-import { db, setActor } from '@/lib/api/db';
-
-const STORAGE_KEY = 'tonyson-admin-dev-role';
+/** Dev preview only (NEXT_PUBLIC_DEV_TOOLS=true). Never grants anything real: the API enforces permissions itself. */
+const DEV_TOOLS = process.env.NEXT_PUBLIC_DEV_TOOLS === 'true';
 
 interface RoleContextValue {
+  /** The signed-in staff member's role, from the server. */
   role: Role;
+  /** Only does anything with NEXT_PUBLIC_DEV_TOOLS=true: previews the UI as another role. */
   setRole: (role: Role) => void;
   can: (permission: Permission) => boolean;
 }
@@ -16,41 +19,24 @@ interface RoleContextValue {
 const RoleContext = createContext<RoleContextValue | null>(null);
 
 /**
- * Dev-only role switcher state. UI visibility only: the backend enforces real authorisation.
- * Initial render is always SUPER_ADMIN (matches SSR); the stored role is applied after mount.
+ * Role and permissions for UI shaping (menu items, buttons). The role is the one the API returned for the signed-in
+ * account. While signed out it falls back to the least-privileged role, so nothing sensitive can flash on screen.
  */
 export function RoleProvider({ children }: { children: React.ReactNode }) {
-  const [role, setRoleState] = useState<Role>('SUPER_ADMIN');
+  const { user } = useStaffAuth();
+  const [preview, setPreview] = useState<Role | null>(null);
+  const role: Role = (DEV_TOOLS && preview) || user?.role || 'DELIVERY_PERSONNEL';
 
+  // Sections still on mock data attribute their (mock) audit lines to whoever is signed in.
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      const parsed = Role.safeParse(stored);
-      if (parsed.success && parsed.data !== 'CUSTOMER') setRoleState(parsed.data);
-    } catch {
-      /* storage unavailable: keep default */
-    }
-  }, []);
-
-  useEffect(() => {
-    const who = db.staff.find((s) => s.role === role);
-    setActor(who?.name ?? 'Dev user', role);
-  }, [role]);
+    if (user) setActor(user.name, role);
+  }, [user, role]);
 
   const setRole = useCallback((next: Role) => {
-    setRoleState(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {
-      /* ignore */
-    }
+    if (DEV_TOOLS) setPreview(next);
   }, []);
 
-  const value = useMemo<RoleContextValue>(
-    () => ({ role, setRole, can: (p) => hasPermission(role, p) }),
-    [role, setRole],
-  );
-
+  const value = useMemo<RoleContextValue>(() => ({ role, setRole, can: (p) => hasPermission(role, p) }), [role, setRole]);
   return <RoleContext.Provider value={value}>{children}</RoleContext.Provider>;
 }
 

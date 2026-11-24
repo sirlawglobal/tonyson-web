@@ -1,0 +1,12 @@
+{
+  "name": "tonyson-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Browser tests for the real auth flows (store + admin against the live API). Not part of the web workspaces.",
+  "scripts": {
+    "test": "node run.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.49.0"
+  }
+}
